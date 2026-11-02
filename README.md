@@ -8,7 +8,7 @@
 
 ## 📌 Project Overview
 
-This is my **Task 2 — Network Security Analysis** submission for the SWYNEX Technologies internship.
+This is my **Task 2 - Network Security Analysis** submission for the SWYNEX Technologies internship.
 
 The task was to analyse network traffic in a controlled environment using Wireshark, identify protocols, suspicious patterns and potential security concerns, and submit a defensive analysis report.
 
@@ -65,7 +65,7 @@ Nmap SYN scan  ->  127.0.0.1 (own loopback only)
 | 3 | Unencrypted DNS, mostly over TCP, plus a **WPAD** lookup | 🟠 Medium |
 | 4 | Local SMB and IPv6 neighbour discovery traffic | 🔵 Informational |
 
-Full details for each finding — evidence, why it matters, recommended mitigation — are in the **[full report](report/Network-Security-Analysis-Report.md)**.
+Full details for each finding - evidence, why it matters, recommended mitigation - are in the **[full report](report/Network-Security-Analysis-Report.md)**.
 
 ---
 
@@ -88,15 +88,15 @@ Full details for each finding — evidence, why it matters, recommended mitigati
 
 ![Protocol hierarchy](screenshots/01-protocol-hierarchy.png)
 
-**Finding 1 — Cleartext credentials (Follow TCP Stream)**
+**Finding 1 - Cleartext credentials (Follow TCP Stream)**
 
 ![Cleartext credentials](screenshots/03-cleartext-credentials.png)
 
-**Finding 2 — TCP SYN port scan**
+**Finding 2 - TCP SYN port scan**
 
 ![Port scan pattern](screenshots/04-port-scan-pattern.png)
 
-**Finding 3 — DNS queries**
+**Finding 3 - DNS queries**
 
 ![DNS queries](screenshots/02-dns-queries.png)
 
@@ -104,22 +104,22 @@ Full details for each finding — evidence, why it matters, recommended mitigati
 
 ## 🪜 Methodology
 
-**Step 1 — Capture**
+**Step 1 - Capture**
 Recorded traffic in Wireshark while browsing, logging in to Juice Shop with a deliberately wrong password, and running a short ping test.
 
-**Step 2 — Protocol overview**
+**Step 2 - Protocol overview**
 Used **Statistics → Protocol Hierarchy** to see which protocols dominate the capture and where the bytes go.
 
-**Step 3 — Credential exposure**
+**Step 3 - Credential exposure**
 Found the login request with `http.request.method == "POST"`, then used **Follow → TCP Stream** (`tcp.stream eq 88`) to show the email, password and cookies readable in plain text.
 
-**Step 4 — DNS review**
+**Step 4 - DNS review**
 Applied the `dns` filter, counted queries and record types, and checked for tunnelling signs (very long names, random sub-domain bursts). Flagged the WPAD lookup.
 
-**Step 5 — Port scan detection**
+**Step 5 - Port scan detection**
 Ran an Nmap SYN scan against my own loopback from Kali, captured it, and used `tcp.flags.syn == 1 && tcp.flags.ack == 0` to expose the pattern: one source, many different destination ports, bare SYN packets sent microseconds apart.
 
-**Step 6 — Cross-check and report**
+**Step 6 - Cross-check and report**
 Re-counted key numbers with Python/Scapy scripts, then wrote the defensive report with risk ratings and recommendations.
 
 ---
@@ -159,10 +159,10 @@ scripts/       Python/Scapy scripts used to cross-check and sanitize
 
 1. Install [Wireshark](https://www.wireshark.org/) and open a file from `captures/`.
 2. Useful display filters:
-   - `http` — cleartext Juice Shop traffic
-   - `http.request.method == "POST"` — the login request, then **Follow → TCP Stream**
-   - `dns` — name lookups
-   - `tcp.flags.syn == 1 && tcp.flags.ack == 0` — SYN-only packets (scan pattern)
+   - `http` - cleartext Juice Shop traffic
+   - `http.request.method == "POST"` - the login request, then **Follow → TCP Stream**
+   - `dns` - name lookups
+   - `tcp.flags.syn == 1 && tcp.flags.ack == 0` - SYN-only packets (scan pattern)
 3. Optional: `pip install scapy` and run the scripts in `scripts/`.
 
 📝 **Note on the capture files:** the raw capture also contained personal browsing traffic, so it is not published. `scripts/sanitize_pcap.py` keeps only the lab traffic to `localhost:3000`.
@@ -187,10 +187,10 @@ This analysis was performed for **educational purposes only**, on traffic genera
 ## 👤 Author
 
 **Mubassir**
-Security Intern, SWYNEX Technologies — Task 2
+Security Intern, SWYNEX Technologies - Task 2
 
 ---
 
 ## 📌 Project Information
 
-**Program:** SWYNEX Technologies Internship | **Task:** 2 — Network Security Analysis | **Repository:** GitHub
+**Program:** SWYNEX Technologies Internship | **Task:** 2 - Network Security Analysis | **Repository:** GitHub
